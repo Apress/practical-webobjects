@@ -1,0 +1,56 @@
+<html>
+	  <head>
+	  		<title>Errata for Practical WebObjects</title>
+	  <head/>
+	  
+	  <body>
+	  		<h1>Errata for Practical WebObjects</h1>	  
+	  		<a href="#chapter1">Chapter 1</a><br/>
+	  		<a href="#chapter2">Chapter 2</a><br/>
+	  		<a href="#chapter2">Chapter 3</a><br/>
+	  		Chapter 4<br/>
+	  		<a href="#chapter5">Chapter 5</a><br/>
+	  		Chapter 6<br/>
+	  		Chapter 7<br/>
+	  		<a href="#chapter8">Chapter 8</a><br/>
+	  		Chapter 9<br/>
+	  		Chapter 10<br/>
+	  		Chapter 11<br/>
+	  		<a href="#appendix">Appendix</a><br/>
+			<br/><br/><br/>
+			<h2><a name="chapter1">Chapter 1</a></h2>
+			<b>page 22</b>, Listing 1-9, the call to <code>super(null);</code> in the constructor is wrong.  The OutputStream passed to the constructor is never used, but null is not allowable. We're not sure what we were thinking when we wrote that! Use this instead: <code>super(new ByteArrayOutputStream());</code>  Or, better still, use <code>com.webobjects.foundation.NSLog.Log4JLogger</code>. <br/><br/>
+			<b>page 29</b>, the link to eojenerator is dead.  If you don't want to use EOGenerator, then we suggest that you use <a target="_blank" href="http://www.objectstyle.org/woproject/ant/wogen.html">WOGen</a>.  A lot of work has gone into this since the book was published.  
+			<br/><br/><br/>
+			<h2><a name="chapter2">Chapter 2</a></h2>
+			<b>page 32</b>, under Horizontal Inheritance, last sentence: reads, "...vertical inheritance only has the rows in the one table to scan".  That should be "horizontal inheritance" - not vertical.
+			<br/><br/><br/>
+			<h2><a name="chapter3">Chapter 3</a></h2>
+			<b>page 61</b>, Just below the <b>Understanding the Object Graph</b> heading, the first sentence reads:
+			"The term graph comes from graph theory and refers to a set of nodes connected by vertices."
+			This definition is wrong. It should be a "... a set of vertices (or nodes) connected by edges (or lines)."
+			<br/><br/><br/>
+			<h2><a name="chapter5">Chapter 5</a></h2>
+			<b>page 140</b>, Listing 5-1 will not compile.  The line<br/>
+			<code>&nbsp;&nbsp;&nbsp;&nbsp;NSTimestamp coercedValue = (NSTimestamp) formatter.parseObject((String)value);</code><br/>
+			should read<br/>
+			<code>&nbsp;&nbsp;&nbsp;&nbsp;NSTimestamp coercedValue = (NSTimestamp)formatter.parseObject((String)value<b>, new ParsePosition(0)</b>);</code><br/><br/>
+			<b>page 153</b>, A side effect of our implementation of the <code>EOModelNotificationProxy</code> is that using just <code>EOGenericRecord</code> for a class in the model won't work.  The EO frameworks use some fancy "infer the package name" code that we did not want try to tap into.  We just use <code>Class.forName()</code>.  As a result you must use the fully qualified name <code>com.webobjects.eocontrol.EOGenericRecord</code> in the model.
+			<br/><br/><br/>
+			<h2><a name="chapter8">Chapter 8</a></h2>	
+			<b>page 233</b>, there was a report of UTF-16 working but UTF-8 not working.  We don't know what was different about that situation.  As long as it is working for you, we would not worry about it.
+			<br/><br/><br/>
+			<h2><a name="appendix">Appendix</a></h2>
+			<b>page 331</b>, The example code has been tested and will build fine with both the 3.0.1 and 3.1.0 versions of Eclipse.<br/><br/>
+			<b>page 345</b>, The instructions for copying config file mistakenly say it should be copied to "~/Library/<b>p</b>slapd.conf". 
+			The correct path is "~/Library/slapd.conf". The last sentence in that paragraph also has a minor typo. It reads, 
+			"... you must created it..."; it should read, "... you must <b>have</b> created it...".<br/><br/>
+			<b>page 345</b>, The slapd.conf file does not work with MacOS >= 10.3.9's OpenLDAP installation. OpenLDAP on OS 10.3.x is 
+			compiled with --disable-cleartext but the slapd.conf file uses a cleartext password. Use slappasswd to generate a hashed 
+			password:<br/>
+			<code>$ slappasswd -s some_password</code><br/>
+			and then, in slapd.conf, replace the rootpw value "secret" with the hashed password. The ldapmodify command on page 346 
+			should now succeed.
+
+	  </body>
+</html>
